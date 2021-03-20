@@ -70,6 +70,11 @@ public class MovieServiceShould {
         assertThat(getMovieIds(movies), CoreMatchers.is(Arrays.asList(3,6)));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void return_movies_by_negative_length() {
+        movieService.findMoviesByTemplate(new Movie(null,-119,Genre.ACTION));
+    }
+
     @Test
     public void return_movies_by_length() {
         Collection<Movie> movies = movieService.findMoviesByLength(119);
