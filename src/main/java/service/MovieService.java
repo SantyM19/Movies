@@ -34,4 +34,25 @@ public class MovieService {
     }
 
 
+    public Collection<Movie> findMoviesByTemplate(Movie template) {
+        Collection<Movie> movies = movieRepository.findAll();
+        if(template.getMinutes() < 0)
+            throw new IllegalArgumentException("Negative value for minutes is not allowed");
+        else {
+            movies = movies.stream()
+                    .filter(movie -> movie.getMinutes() <= template.getMinutes()).collect(Collectors.toList());
+        }
+        if(template.getName() != null && template.getName().length() > 0) {
+            movies = movies.stream()
+                    .filter(movie -> movie.getName().toLowerCase().contains(template.getName())).collect(Collectors.toList());
+        }
+        if(template.getGenre() != null) {
+            movies = movies.stream()
+                    .filter(movie -> template.getGenre().toString().equals(movie.getGenre().toString())).collect(Collectors.toList());
+        }
+
+        return movies;
+    }
+
+
 }
